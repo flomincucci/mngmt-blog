@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const withCSS = require('@zeit/next-css')
 const {
   NOTION_TOKEN,
   BLOG_INDEX_ID,
@@ -41,7 +42,7 @@ if (!BLOG_INDEX_ID) {
   )
 }
 
-module.exports = {
+module.exports = withCSS({
   target: 'experimental-serverless-trace',
 
   webpack(cfg, { dev, isServer }) {
@@ -59,4 +60,4 @@ module.exports = {
     }
     return cfg
   },
-}
+})

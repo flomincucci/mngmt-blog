@@ -1,18 +1,12 @@
 import Link from 'next/link'
 import Header from '../components/header'
 
-import blogStyles from '../styles/blog.module.css'
-import sharedStyles from '../styles/shared.module.css'
-
 import { getBlogLink, getDateStr, postIsPublished } from '../lib/blog-helpers'
-import { textBlock } from '../lib/notion/renderers'
-import getNotionUsers from '../lib/notion/getNotionUsers'
 import getBlogIndex from '../lib/notion/getBlogIndex'
 
 export async function getStaticProps({ preview }) {
   const postsTable = await getBlogIndex()
 
-  const authorsToGet: Set<string> = new Set()
   const posts: any[] = Object.keys(postsTable)
     .map(slug => {
       const post = postsTable[slug]
@@ -20,19 +14,9 @@ export async function getStaticProps({ preview }) {
       if (!preview && !postIsPublished(post)) {
         return null
       }
-      post.Authors = post.Authors || []
-      for (const author of post.Authors) {
-        authorsToGet.add(author)
-      }
       return post
     })
     .filter(Boolean)
-
-  const { users } = await getNotionUsers([...authorsToGet])
-
-  posts.map(post => {
-    post.Authors = post.Authors.map(id => users[id].full_name)
-  })
 
   return {
     props: {
@@ -45,54 +29,41 @@ export async function getStaticProps({ preview }) {
 
 export default ({ posts = [], preview }) => {
   return (
-    <>
-      <Header titlePre="Blog" />
-      {preview && (
-        <div className={blogStyles.previewAlertContainer}>
-          <div className={blogStyles.previewAlert}>
-            <b>Note:</b>
-            {` `}Viewing in preview mode{' '}
-            <Link href={`/api/clear-preview`}>
-              <button className={blogStyles.escapePreview}>Exit Preview</button>
-            </Link>
-          </div>
-        </div>
-      )}
-      <div className={`${sharedStyles.layout} ${blogStyles.blogIndex}`}>
-        <h1>This is a Blog</h1>
-        {posts.length === 0 && (
-          <p className={blogStyles.noPosts}>There are no posts yet</p>
-        )}
-        {posts.map(post => {
-          return (
-            <div className={blogStyles.postPreview} key={post.Slug}>
-              <h3>
-                <Link href="/blog/[slug]" as={getBlogLink(post.Slug)}>
-                  <div className={blogStyles.titleContainer}>
-                    {!post.Published && (
-                      <span className={blogStyles.draftBadge}>Draft</span>
-                    )}
-                    <a>{post.Page}</a>
-                  </div>
-                </Link>
-              </h3>
-              {post.Authors.length > 0 && (
-                <div className="authors">By: {post.Authors.join(' ')}</div>
-              )}
-              {post.Date && (
-                <div className="posted">Posted: {getDateStr(post.Date)}</div>
-              )}
-              <p>
-                {(!post.preview || post.preview.length === 0) &&
-                  'No preview available'}
-                {(post.preview || []).map((block, idx) =>
-                  textBlock(block, true, `${post.Slug}${idx}`)
-                )}
-              </p>
+    <div className="antialiased w-full text-gray-700">
+      <div className="max-w-screen-md mx-auto">
+        <Header />
+        {preview && (
+          <div>
+            <div>
+              <b>Note:</b>
+              {` `}Viewing in preview mode{' '}
+              <Link href={`/api/clear-preview`}>
+                <button>Exit Preview</button>
+              </Link>
             </div>
-          )
-        })}
+          </div>
+        )}
+        <div className="text-xl py-5">
+          {posts.length === 0 && <p>No hay nada publicado todavía.</p>}
+          <ul>
+            {posts.map(post => {
+              return (
+                <li key={post.Slug} className="mb-3 flex justify-between">
+                  <Link href="/blog/[slug]" as={getBlogLink(post.Slug)}>
+                    <a>
+                      {!post.Published && <span>Borrador</span>}
+                      <a>{post.Page}</a>
+                    </a>
+                  </Link>
+                  {post.Date && (
+                    <div className="posted">{getDateStr(post.Date)}</div>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
       </div>
-    </>
+    </div>
   )
 }
