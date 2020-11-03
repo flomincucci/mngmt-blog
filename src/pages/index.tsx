@@ -3,6 +3,7 @@ import Header from '../components/header'
 
 import { getBlogLink, getDateStr, postIsPublished } from '../lib/blog-helpers'
 import getBlogIndex from '../lib/notion/getBlogIndex'
+import { textBlock } from '../lib/notion/renderers'
 
 export async function getStaticProps({ preview }) {
   const postsTable = await getBlogIndex()
@@ -43,20 +44,29 @@ export default ({ posts = [], preview }) => {
             </div>
           </div>
         )}
-        <div className="text-xl py-5">
+        <div className="py-5">
           {posts.length === 0 && <p>No hay nada publicado todavía.</p>}
           <ul>
             {posts.map(post => {
               return (
-                <li key={post.Slug} className="mb-3 flex justify-between">
-                  <Link href="/blog/[slug]" as={getBlogLink(post.Slug)}>
-                    <a>
-                      {!post.Published && <span>Borrador</span>}
-                      <a>{post.Page}</a>
-                    </a>
-                  </Link>
+                <li key={post.Slug} className="mb-3">
+                  <div>
+                    <Link href="/blog/[slug]" as={getBlogLink(post.Slug)}>
+                      <a className="text-black text-2xl">
+                        {!post.Published && <span>Borrador</span>}
+                        <a>{post.Page}</a>
+                      </a>
+                    </Link>
+                    <p className="text-m">
+                      {(post.preview || []).map((block, idx) =>
+                        textBlock(block, true, `${post.Slug}${idx}`)
+                      )}
+                    </p>
+                  </div>
                   {post.Date && (
-                    <div className="posted">{getDateStr(post.Date)}</div>
+                    <div className="posted text-sm">
+                      {getDateStr(post.Date)}
+                    </div>
                   )}
                 </li>
               )

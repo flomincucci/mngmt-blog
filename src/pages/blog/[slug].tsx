@@ -151,11 +151,11 @@ const RenderPost = ({ post, redirect, preview }) => {
           </div>
         )}
         <div className="py-5">
-          <h1 className="text-center font-bold text-3xl text-gray-900">
+          <h1 className="text-left font-bold text-3xl text-gray-900">
             {post.Page || ''}
           </h1>
           {post.Authors.length > 0 && post.Date && (
-            <div className="text-center text-sm mb-8">
+            <div className="text-left text-sm mb-8">
               Por: {post.Authors.join(' ')} | Publicado: {getDateStr(post.Date)}{' '}
             </div>
           )}
