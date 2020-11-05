@@ -20,10 +20,10 @@ export default () => {
 
           <div className="text-left text-black">
             <p>
-              Mi nombre es Florencia. Soy ingeniera en sistemas de profesión,
-              viviendo en la Ciudad de Buenos Aires, Argentina. Fui y vine de
-              varias roles en sistemas: dev front end, back end, full stack,
-              analista funcional, tech lead y manager.
+              Mi nombre es Florencia. Soy ingeniera en sistemas, viviendo en la
+              Ciudad de Buenos Aires, Argentina. Fui y vine de varias roles en
+              sistemas: dev front end, back end, full stack, analista funcional,
+              tech lead y manager.
             </p>
             <br />
             <p>
@@ -41,6 +41,12 @@ export default () => {
               Actualmente trabajo como <strong>Engineering Manager</strong> en
               Properati. Previamente trabajé como Tech Lead, y luego Head of
               Development en Acámica.
+            </p>
+            <h2>Contacto</h2>
+            <p>
+              <strong>Twitter:</strong> @florenciaypunto
+              <br />
+              <strong>Mail:</strong> florencia at mincucci dot com dot ar
             </p>
           </div>
         </div>

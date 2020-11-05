@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 
 const navItems: { label: string; page?: string; link?: string }[] = [
   { label: 'Sobre mi', page: '/sobre-mi' },
-  { label: 'Contacto', page: '/contacto' },
 ]
 
 export default () => {
