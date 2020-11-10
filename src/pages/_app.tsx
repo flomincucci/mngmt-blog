@@ -1,3 +1,4 @@
+import '../styles/global.css'
 import '../styles/styles.css'
 import Footer from '../components/footer'
 

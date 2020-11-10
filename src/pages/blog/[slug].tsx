@@ -150,7 +150,7 @@ const RenderPost = ({ post, redirect, preview }) => {
             </div>
           </div>
         )}
-        <div className="py-5">
+        <div className="py-5 post">
           <h1 className="text-left font-bold text-3xl text-gray-900">
             {post.Page || ''}
           </h1>
